@@ -3,54 +3,77 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using EWGames.Dev.Scripts;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class SewingMachine : MonoBehaviour
 {
     [SerializeField] public ClothesData clothesData;
     public GameObject needle;
-    public GameObject rope;
-    public List<GameObject> ropes;
+    public GameObject ropeObject;
+    
+    
     public SpriteRenderer clothesRenderer;
-    public ColorChange ColorChange;
+    public SpriteRenderer clothesIconRenderer;
+    public ColorChange colorChange;
 
     private void Start()
     {
-        foreach (Transform r in rope.transform)
-        {
-            ropes.Add(r.gameObject);
-        }
-
         clothesRenderer.sprite = clothesData.clothesImage;
+        clothesIconRenderer.sprite = clothesData.clothesImage;
+        SignUpEvents();
     }
 
-    private void Update()
+    void SignUpEvents()
     {
-        if (Input.GetMouseButtonUp(0))
+        DragAndDrop.OnRopeLocated += SewStarted;
+    }
+
+    void SewStarted(SewingMachine machine)
+    {
+        if (machine==this)
         {
             StartCoroutine(Sew());
         }
     }
-
+    
     IEnumerator Sew()
     {
-        var duration = clothesData.sewingTime/ropes.Count;
+        List<GameObject> ropeLoops = new List<GameObject>();
+        foreach (Transform t in ropeObject.transform)
+        {
+            ropeLoops.Add(t.gameObject);
+            t.gameObject.SetActive(true);
+        }
+        
+        
+        var duration = clothesData.sewingTime/ropeLoops.Count;
 
         var animator = clothesRenderer.gameObject.GetComponent<Animator>();
         animator.speed = 1/clothesData.sewingTime;
         animator.Play("ClothSew",0);
 
 
-        foreach (var r in ropes)
+        foreach (var r in ropeLoops)
         {
             r.transform.DOScale(new Vector3(0, 1, 0), duration).SetEase(Ease.InSine);
-            needle.transform.DOMoveY(0.06f, duration / 2).OnComplete(() =>
+            
+            // Clothes sewing at machine
+            needle.transform.DOLocalMoveY(0.09f, duration / 2).OnComplete(() =>
             {
-                needle.transform.DOMoveY(0.12f, duration / 2);
+                needle.transform.DOLocalMoveY(0.14f, duration / 2);
             });
             yield return new WaitForSeconds(duration);
         }
         
-        ColorChange.ChangeColor();
+        foreach (Transform t in ropeObject.transform)
+        {
+            t.gameObject.SetActive(false);
+            t.transform.localScale=Vector3.one;
+        }
+        
+        colorChange.ChangeColor();
     }
+    
 }
