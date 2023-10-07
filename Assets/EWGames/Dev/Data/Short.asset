@@ -15,6 +15,6 @@ MonoBehaviour:
   sewingTime: 10
   price: 1000
   paintingTime: 10
-  clothesModel: {fileID: 919132149155446097, guid: 8ef52c4bd21f8483db0bb8746efb3eca,
+  clothesModel: {fileID: 3532419917195265900, guid: 15bd05ef5f1abac41b4b2a8c3a9de398,
     type: 3}
   clothesImage: {fileID: 21300000, guid: 061414766444d4d078f6f4a17b0f255e, type: 3}

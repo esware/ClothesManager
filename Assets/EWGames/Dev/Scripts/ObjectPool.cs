@@ -1,15 +1,24 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
+
+[Serializable]
+public struct Pool
+{
+    public int poolSize;
+    public GameObject prefab;
+    
+}
 
 public class ObjectPool : MonoBehaviour
 {
+    public Pool[] Pools;
     public GameObject prefab;
     public int poolSize = 10;
 
-    private List<GameObject> objectPool;
+    public List<GameObject> objectPool;
 
     private static ObjectPool instance;
-
     public static ObjectPool Instance
     {
         get
