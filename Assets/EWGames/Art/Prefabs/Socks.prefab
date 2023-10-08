@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4081402984606426472}
   - component: {fileID: 8904465354767212364}
   - component: {fileID: 7630153355644791933}
-  - component: {fileID: -2513228752836767874}
+  - component: {fileID: 6449841519305970441}
+  - component: {fileID: 6924409230158069073}
   m_Layer: 0
   m_Name: Socks
   m_TagString: Untagged
@@ -78,7 +79,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-2513228752836767874
+--- !u!114 &6449841519305970441
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,9 +88,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 652070799777289025}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 896b5a7afeb24bbfbb654f08746b7ce4, type: 3}
+  m_Script: {fileID: 11500000, guid: 47c657cf94c9442c9a071970f9f26775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: 42f0a9f883ccd924db31e86ca8baf9bb, type: 2}
+  targetTag: PaintMachine
+--- !u!65 &6924409230158069073
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652070799777289025}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1770488, y: 0.15757293, z: 0.3}
+  m_Center: {x: 0.0035345368, y: 0.0112206, z: -0.00014201598}
 --- !u!1001 &1211080941319759290
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -175,48 +191,3 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1211080941319759290}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2022105662532688107 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7cb2f8e17cb114795a5e6a15a4384ec9,
-    type: 3}
-  m_PrefabInstance: {fileID: 1211080941319759290}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &3640659038776053892
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2022105662532688107}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.1770488, y: 0.15757293, z: 0.013305352}
-  m_Center: {x: 0.0035345368, y: 0.0112206, z: -0.00014201598}
---- !u!114 &1340329956043389285
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2022105662532688107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54ad3bd62ec4194adb1b092ae57dcd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  money: {fileID: 21300000, guid: a2032e1164c6b8a4dab424986e373595, type: 3}
---- !u!114 &8922042220791839300
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2022105662532688107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5022aa27971c49afbc6f41358df12b35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTag: PaintMachine

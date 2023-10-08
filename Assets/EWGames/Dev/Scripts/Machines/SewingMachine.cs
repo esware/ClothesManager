@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using EWGames.Dev.Scripts;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,13 +13,18 @@ public class SewingMachine : MonoBehaviour
     [Space,Header("Particles")]
     [SerializeField] private ParticleSystem finishSparkParticle;
     [SerializeField] private ParticleSystem finishCloudParticle;
-    
-    [Space,Header("Machine Components")]
-    [SerializeField] private ClothesData clothesData;
+
+    [Space, Header("Machine Components")] 
+    [SerializeField] private MachineData machineData;
+    [SerializeField] private ClothingItemData clothingItemData;
     [SerializeField] private GameObject needle;
     [SerializeField] private GameObject ropeObject;
     [SerializeField] private SpriteRenderer sewingClothes;
-    
+
+    [Space,Header("Machine Locked Settings")]
+    [SerializeField]
+    private Image lockedImage;
+
     [Space, Header("Canvas")] 
     [SerializeField] private RectTransform mainCanvas;
 
@@ -26,29 +32,34 @@ public class SewingMachine : MonoBehaviour
 
     private ColorTransition _colorTransition;
     private Coroutine _needleAnimationCoroutine;
+    private bool _isMachineLocked = true;
 
     private void Start()
     {
+        InitMachine();
         InitialComponents();
         SignUpEvents();
+
+        if (_isMachineLocked)
+        {
+            GetComponent<Collider>().enabled = false;
+        }
     }
 
     private void InitialComponents()
     {
-        sewingClothes.sprite = clothesData.clothesImage;
+        sewingClothes.sprite = clothingItemData.itemSprite;
 
         _colorTransition = GetComponentInChildren<ColorTransition>();
         
-        _colorTransition.SetIcons(clothesData.clothesImage);
+        _colorTransition.SetIcons(clothingItemData.itemSprite);
     }
-
     private void SignUpEvents()
     {
         RopeControl.OnRopeLocated += ValidateSew;
-        ClothesUI.OnReadyForPaint += MachineReady;
+        ClothingItem.OnReadyForPaint += MachineReady;
     }
-
-    private void MachineReady(ClothesUI arg1, string id)
+    private void MachineReady(ClothingItem item, string id)
     {
         if (id==name)
         {
@@ -56,8 +67,6 @@ public class SewingMachine : MonoBehaviour
             _colorTransition.ResetColor();
         }
     }
-
-
     private void ValidateSew(SewingMachine machine)
     {
         if (machine==this && !MachineIsRunning)
@@ -72,7 +81,7 @@ public class SewingMachine : MonoBehaviour
         MachineIsRunning = true;
         SetRopeSlot(true);
     
-        var duration = clothesData.sewingTime / GetRopeChild().Count;
+        var duration = machineData.operationTime / GetRopeChild().Count;
         var percent = 2.5f / GetRopeChild().Count;
 
         _needleAnimationCoroutine = StartCoroutine(AnimateNeedle());
@@ -107,7 +116,6 @@ public class SewingMachine : MonoBehaviour
             yield return needle.transform.DOLocalMoveY(0.14f, 0.2f).WaitForCompletion();
         }
     }
-    
     private void SetRopeSlot(bool isActive)
     {
         foreach (Transform t in ropeObject.transform)
@@ -116,7 +124,6 @@ public class SewingMachine : MonoBehaviour
             t.transform.localScale = isActive? Vector3.one : Vector3.zero;
         }
     }
-
     private List<GameObject> GetRopeChild()
     {
         List<GameObject> ropeLoops = new List<GameObject>();
@@ -127,18 +134,37 @@ public class SewingMachine : MonoBehaviour
 
         return ropeLoops;
     }
-
     private void InstantiateClothes()
     {
-        var newClothes = Instantiate(clothesData.clothesModel,mainCanvas.transform);
+        var newClothes = Instantiate(clothingItemData.clothesModel,mainCanvas.transform);
+        newClothes.GetComponent<ClothingItem>().itemData.price = machineData.earnedMoney;
         newClothes.gameObject.name = gameObject.name;
         sewingClothes.transform.localPosition=Vector3.zero;
-
         newClothes.transform.localScale=Vector3.zero;
-        
         newClothes.transform.DOScale(Vector3.one * 0.03f, 1f);
         newClothes.transform.DORotate(Vector3.zero, 1f);
         newClothes.transform.DOLocalMove(new Vector3(0, 2f, -3f), 1f);
+    }
+
+    private void InitMachine()
+    {
+        var level =PlayerPrefs.GetInt("CurrentLevel");
+        
+        if (machineData.unlockedPrice==0)
+        {
+            _isMachineLocked = false;
+            lockedImage.gameObject.SetActive(false);
+            return;
+        }
+
+        if (level>= machineData.unlockedLevel)
+        {
+            lockedImage.GetComponentInChildren<TextMeshProUGUI>().text = machineData.unlockedPrice.ToString();
+        }
+        else
+        {
+            lockedImage.GetComponentInChildren<TextMeshProUGUI>().text = "LEVEL "+machineData.unlockedLevel.ToString();
+        }
     }
 
 

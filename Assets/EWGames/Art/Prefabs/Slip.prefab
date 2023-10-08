@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 2192595807819077943}
   - component: {fileID: 1561557463539276175}
   - component: {fileID: 2689474277387240359}
-  - component: {fileID: -5951206368089576035}
+  - component: {fileID: 5559460256877679046}
+  - component: {fileID: 3207530599692379767}
   m_Layer: 0
   m_Name: Slip
   m_TagString: Untagged
@@ -78,7 +79,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &-5951206368089576035
+--- !u!114 &5559460256877679046
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,9 +88,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 3231065093550943595}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 896b5a7afeb24bbfbb654f08746b7ce4, type: 3}
+  m_Script: {fileID: 11500000, guid: 47c657cf94c9442c9a071970f9f26775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: bd913454db1999e4ba2abf94c0773e84, type: 2}
+  targetTag: PaintMachine
+--- !u!65 &3207530599692379767
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3231065093550943595}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1770488, y: 0.15757293, z: 0.3}
+  m_Center: {x: 0.0035345368, y: 0.0112206, z: -0.00014201598}
 --- !u!1001 &8237996657998699822
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -189,29 +205,3 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.18863103, y: 0.13903269, z: 0.098857}
   m_Center: {x: 0.00005499646, y: 0.013832074, z: 0.0000000018626451}
---- !u!114 &5564058034038036248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9120448409773482111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54ad3bd62ec4194adb1b092ae57dcd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  money: {fileID: 21300000, guid: a2032e1164c6b8a4dab424986e373595, type: 3}
---- !u!114 &8803275022146852841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9120448409773482111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5022aa27971c49afbc6f41358df12b35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTag: PaintMachine

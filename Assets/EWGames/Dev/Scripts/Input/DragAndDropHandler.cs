@@ -10,10 +10,11 @@ namespace EWGames.Dev.Scripts
 
         public string targetTag;
         
-        private bool _isSelected = false;
+       
         private Transform _targetTransform;
         private Camera _mainCam;
         private Vector3 _mousePosition;
+        private bool _isSelected;
 
 
         private void Awake()

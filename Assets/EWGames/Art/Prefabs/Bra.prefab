@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 3172055134107054405}
   - component: {fileID: 5416285575172168945}
   - component: {fileID: 2994156763743850587}
-  - component: {fileID: 1426564737170545379}
+  - component: {fileID: 2081218546283150183}
+  - component: {fileID: 3189750439296052648}
   m_Layer: 0
   m_Name: Bra
   m_TagString: Untagged
@@ -78,7 +79,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1426564737170545379
+--- !u!114 &2081218546283150183
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -87,9 +88,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 917947786470783721}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 896b5a7afeb24bbfbb654f08746b7ce4, type: 3}
+  m_Script: {fileID: 11500000, guid: 47c657cf94c9442c9a071970f9f26775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemData: {fileID: 11400000, guid: b2cc6ec6738a2d747b722feae5bc3bc8, type: 2}
+  targetTag: PaintMachine
+--- !u!65 &3189750439296052648
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917947786470783721}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.1770488, y: 0.15757293, z: 0.3}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &3276902282138173546
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -183,34 +199,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.32563713, y: 0.21633787, z: 0.194832}
   m_Center: {x: 0.00016999245, y: 0.036409475, z: 0.017127212}
---- !u!114 &3839914553984184884
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2429846559514328379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d54ad3bd62ec4194adb1b092ae57dcd3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moneyTransform: {fileID: 0}
-  money: {fileID: 21300000, guid: a2032e1164c6b8a4dab424986e373595, type: 3}
-  parent: {fileID: 0}
---- !u!114 &5874187823611863822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2429846559514328379}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5022aa27971c49afbc6f41358df12b35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetTag: PaintMachine
 --- !u!4 &3094918794389104513 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 4aedd77e65f064da7b2132cbf357ca91,

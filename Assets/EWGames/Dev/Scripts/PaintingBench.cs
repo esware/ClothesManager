@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Collections.Generic;
 using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
 
@@ -12,31 +8,30 @@ namespace EWGames.Dev.Scripts
 {
     public class PaintingBench : MonoBehaviour
     {
-        private readonly Dictionary<Clothes, Vector3> _positions = new Dictionary<Clothes, Vector3>();
+        private readonly Dictionary<ClothingItem, Vector3> _positions = new Dictionary<ClothingItem, Vector3>();
+        
         private void OnEnable()
         {
             SignUpEvents();
         }
+        
         void SignUpEvents()
         {
-            ClothesUI.OnReadyForPaint += GetReadyClothes;
+            ClothingItem.OnReadyForPaint += GetReadyClothes;
         }
 
-        void GetReadyClothes(ClothesUI clothesController,string id)
+        void GetReadyClothes(ClothingItem clothesController,string id)
         {
-            var child = clothesController.transform.GetChild(0).gameObject;
-            child.gameObject.SetActive(true);
-
-            child.transform.SetParent(transform);
-            child.transform.localPosition = ObjectsToPlace(child.GetComponent<Clothes>());
-            child.transform.localScale =Vector3.one*0.7f;
-            child.transform.localRotation = Quaternion.identity;
-
-            clothesController.transform.SetParent(child.transform);
+            clothesController.transform.SetParent(transform);
+            Transform transform1;
+            
+            (transform1 = clothesController.transform).localPosition = ObjectsToPlace(clothesController);
+            transform1.DOScale(Vector3.one, 0.3f);
+            transform1.localRotation = Quaternion.identity;
 
         }
 
-        Vector3 ObjectsToPlace(Clothes c)
+        Vector3 ObjectsToPlace(ClothingItem c)
         {
             var defaultPosition=new Vector3(-0.3f, 0.2f, -0.2f);
             
@@ -53,9 +48,9 @@ namespace EWGames.Dev.Scripts
             return defaultPosition;
         }
 
-        public void RemovePositionFromList(Clothes c)
+        public void RemovePositionFromList(ClothingItem c)
         {
-            List<Clothes> clothes = new List<Clothes>();
+            List<ClothingItem> clothes = new List<ClothingItem>();
             
             _positions.Remove(c);
             foreach (var p in _positions)
