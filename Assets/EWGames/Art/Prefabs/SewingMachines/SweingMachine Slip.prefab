@@ -304,14 +304,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd1150135214ca4cac754359edc5286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finishSparkParticle: {fileID: 4739158997018093713}
-  finishCloudParticle: {fileID: 2154911940619732930}
   machineData: {fileID: 11400000, guid: 4703343faf16505439f66e91214e8ca8, type: 2}
+  isLocked: 0
+  sparkParticleEffect: {fileID: 2154911940619732930}
+  finishCloudParticle: {fileID: 2154911940619732930}
   clothingItemData: {fileID: 11400000, guid: bd913454db1999e4ba2abf94c0773e84, type: 2}
   needle: {fileID: 8403131195204768503}
   ropeObject: {fileID: 6015418438140889531}
   sewingClothes: {fileID: 3087230476517719003}
-  lockedImage: {fileID: 3635270360451880066}
   mainCanvas: {fileID: 3087230475241570227}
 --- !u!65 &4638980441601877413
 BoxCollider:
@@ -1250,18 +1250,25 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 887285025849003531}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3635270360451880066 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4477517177045211785, guid: f5c0883c46a06c04b8b84b06c88ba096,
+--- !u!1 &1062000280717788341 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 210752908252957374, guid: f5c0883c46a06c04b8b84b06c88ba096,
     type: 3}
   m_PrefabInstance: {fileID: 887285025849003531}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!114 &2111421528742560480
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1062000280717788341}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d8b9bf9df354190a93abc23627b5c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
 --- !u!1001 &1303404069954843421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1508,12 +1515,6 @@ PrefabInstance:
 --- !u!4 &4739158997002923687 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6622122870576776807, guid: 5611fe16e5aa2ce4b940a38c110931dd,
-    type: 3}
-  m_PrefabInstance: {fileID: 1883171317282023616}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &4739158997018093713 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6622122870557409361, guid: 5611fe16e5aa2ce4b940a38c110931dd,
     type: 3}
   m_PrefabInstance: {fileID: 1883171317282023616}
   m_PrefabAsset: {fileID: 0}

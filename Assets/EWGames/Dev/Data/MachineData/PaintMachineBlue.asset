@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da5df4dc5d54b519485563a23ffba78, type: 3}
   m_Name: PaintMachineBlue
   m_EditorClassIdentifier: 
+  isLocked: 1
   machineType: 1
-  operationTime: 5
-  earnedMoney: 250
-  unlockedPrice: 500
-  unlockedLevel: 5
+  color: 2
+  operationTime: 8
+  earnedMoney: 200
+  unlockedPrice: 1000
+  unlockedLevel: 6
   lockedSpite: {fileID: 21300000, guid: a90170b3b5a3fb441a6dd5051a53e229, type: 3}
-  color: {r: 0, g: 0.4082811, b: 1, a: 1}
-  paintedColor: 1

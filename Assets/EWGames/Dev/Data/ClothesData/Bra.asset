@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6101e96e6c2947d9be15d525d76788ef, type: 3}
   m_Name: Bra
   m_EditorClassIdentifier: 
-  price: 0
+  price: 50
   clothesModel: {fileID: 917947786470783721, guid: 7ddd197bb0234cb44844d00b33f5e504,
     type: 3}
   itemSprite: {fileID: 21300000, guid: 416067fa297e64842be01c0172c22968, type: 3}
-  paintedColor: 0
-  clothesType: 1
+  color: 0

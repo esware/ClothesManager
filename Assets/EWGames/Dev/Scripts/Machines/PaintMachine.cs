@@ -1,117 +1,95 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using EWGames.Dev.Scripts;
+using EWGames.Dev.Scripts.Machines;
 using EWGames.Dev.Scripts.Missions;
 using EWGames.Dev.Scripts.ShopItem;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
-public class PaintMachine : MonoBehaviour
+public class PaintMachine : MachineBase
 {
+    #region Inspector Variables
 
-    [Space, Header("Machine Settings")] 
-    [SerializeField] private MachineData machineData;
+    [Space, Header("Machine Settings")]
     [SerializeField] private GameObject durationCanvas;
+    [SerializeField] private float radius = 2f;
+    [SerializeField] private float speed = 1f;
+    [SerializeField] private Image timer;
     
-    [Space,Header("Machine Locked Settings")]
-    [SerializeField]
-    private Image lockedImage;
-    public bool MachineIsRunning { get; private set; } = false;
+
+    #endregion
     
-    
-    public float radius = 2f;
-    private float angle = 0f;
-    public float speed = 1f;
-    public Image timer;
-    
-    private bool _isMachineLocked = true;
+    public bool MachineIsRunning { get; private set; }
 
     private void Start()
     {
         SignUpEvents();
-        InitMachine();
-        
-        if (_isMachineLocked)
-        {
-            GetComponent<Collider>().enabled = false;
-        }
     }
-
-    void SignUpEvents()
+    private void SignUpEvents()
     {
         ClothingItem.OnClothesLocated += PaintStarted;
     }
-
-    void PaintStarted(PaintMachine machine,ClothingItem clothes)
+    private void PaintStarted(PaintMachine machine,ClothingItem clothes)
     {
-        
         if (machine==this)
         {
             StartCoroutine(Paint(clothes));
         }
     }
-
-    private IEnumerator Paint(ClothingItem item)
+    private void InitializeTimer()
     {
-        MachineIsRunning = true;
         timer.fillAmount = 0;
         timer.transform.parent.gameObject.SetActive(true);
-        
-        var circle = timer.GetComponent<Image>();  
-        var percent = 1 / machineData.operationTime;
-        var t = 0f;
-        
-        float startAngle = 0f;
+    }
+    private void UpdateItemPosition(ClothingItem item,float elapsedTime)
+    {
+        float time =  speed * elapsedTime;
 
-        item.PaintItem(ColorMapper.GetColorFromCode(machineData.color),machineData.operationTime);
-        
+        float x = radius * Mathf.Cos(time);
+        float y = radius * Mathf.Sin(time) * 0.8f;
 
-        while (t < 1f)
-        {
-            angle = startAngle + speed * t;
-
-            float x = radius * Mathf.Cos(angle);
-            float y = radius * Mathf.Sin(angle) * 0.8f;
-
-            item.transform.localPosition = new Vector3(x, 0.18f, y - 0.05f);
-            t += percent*Time.deltaTime;
-            circle.fillAmount = t;
-            yield return null;
-        }
-
+        item.transform.localPosition = new Vector3(x, 0.18f, y - 0.05f);
+    }
+    private void UpdateTimer(float elapsedTime, float duration)
+    {
+        timer.fillAmount = elapsedTime / duration;
+    }
+    private void FinishPaint(ClothingItem item)
+    {
         item.itemData.color = machineData.color;
-        item.itemData.price += machineData.earnedMoney;
-        
-        Shop.Instance.SellItem(item.itemData);
-        
+        item.price = item.itemData.price + machineData.earnedMoney;
+
         item.MoveToStartPosition(durationCanvas.transform);
-        
+
         timer.transform.parent.gameObject.SetActive(false);
         MachineIsRunning = false;
     }
-    
-    private void InitMachine()
+    private IEnumerator Paint(ClothingItem item)
     {
-        var level =PlayerPrefs.GetInt("CurrentLevel");
-        
-        if (machineData.unlockedPrice==0)
+        MachineIsRunning = true;
+        InitializeTimer();
+
+        item.PaintItem(ColorMapper.GetColorFromCode(machineData.color), machineData.operationTime);
+
+        float duration = machineData.operationTime;
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
         {
-            _isMachineLocked = false;
-            lockedImage.gameObject.SetActive(false);
-            return;
+            UpdateItemPosition(item,elapsedTime);
+            UpdateTimer(elapsedTime, duration);
+
+            elapsedTime += Time.deltaTime ;
+            yield return null;
         }
 
-        if (level>= machineData.unlockedLevel)
-        {
-            lockedImage.GetComponentInChildren<TextMeshProUGUI>().text = machineData.unlockedPrice.ToString();
-        }
-        else
-        {
-            lockedImage.GetComponentInChildren<TextMeshProUGUI>().text = "LEVEL "+machineData.unlockedLevel.ToString();
-        }
+        FinishPaint(item);
     }
 
 }

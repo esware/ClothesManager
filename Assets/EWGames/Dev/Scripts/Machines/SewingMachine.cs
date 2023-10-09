@@ -4,26 +4,23 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using DG.Tweening;
 using EWGames.Dev.Scripts;
+using EWGames.Dev.Scripts.Machines;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SewingMachine : MonoBehaviour
+public class SewingMachine : MachineBase
 {
     [Space,Header("Particles")]
-    [SerializeField] private ParticleSystem finishSparkParticle;
+    [SerializeField] private ParticleSystem sparkParticleEffect;
     [SerializeField] private ParticleSystem finishCloudParticle;
 
-    [Space, Header("Machine Components")] 
-    [SerializeField] private MachineData machineData;
+    [Space, Header("Machine Components")]
     [SerializeField] private ClothingItemData clothingItemData;
     [SerializeField] private GameObject needle;
     [SerializeField] private GameObject ropeObject;
     [SerializeField] private SpriteRenderer sewingClothes;
-
-    [Space,Header("Machine Locked Settings")]
-    [SerializeField]
-    private Image lockedImage;
+    
 
     [Space, Header("Canvas")] 
     [SerializeField] private RectTransform mainCanvas;
@@ -31,19 +28,11 @@ public class SewingMachine : MonoBehaviour
     public bool MachineIsRunning { get; private set; } = false;
 
     private ColorTransition _colorTransition;
-    private Coroutine _needleAnimationCoroutine;
-    private bool _isMachineLocked = true;
 
     private void Start()
     {
-        InitMachine();
         InitialComponents();
         SignUpEvents();
-
-        if (_isMachineLocked)
-        {
-            GetComponent<Collider>().enabled = false;
-        }
     }
 
     private void InitialComponents()
@@ -56,75 +45,87 @@ public class SewingMachine : MonoBehaviour
     }
     private void SignUpEvents()
     {
-        RopeControl.OnRopeLocated += ValidateSew;
-        ClothingItem.OnReadyForPaint += MachineReady;
+        RopeControl.OnRopeLocated += AcceptNewThreadIfMachineIdle;
+        ClothingItem.OnReadyForPaint += OnMachineReadyForClothingItem;
     }
-    private void MachineReady(ClothingItem item, string id)
+
+    #region Machine State Control
+    private void OnMachineReadyForClothingItem(ClothingItem item, string id)
     {
         if (id==name)
         {
             MachineIsRunning = false;
             _colorTransition.ResetColor();
+            StopFinishParticles();
         }
     }
-    private void ValidateSew(SewingMachine machine)
+    private void AcceptNewThreadIfMachineIdle(SewingMachine machine)
     {
-        if (machine==this && !MachineIsRunning)
+        if (machine == this && !MachineIsRunning)
         {
-            Func<Task> func = Sew;
+            Func<Task> func = StartSewingProcess;
             func();
         }
     }
-
-    private async Task Sew()
+    private async Task StartSewingProcess()
     {
         MachineIsRunning = true;
-        SetRopeSlot(true);
+        SetRopeSlotsVisibility();
     
-        var duration = machineData.operationTime / GetRopeChild().Count;
-        var percent = 2.5f / GetRopeChild().Count;
-
-        _needleAnimationCoroutine = StartCoroutine(AnimateNeedle());
-
-        foreach (var r in GetRopeChild())
+        var duration = machineData.operationTime / GetActiveRopeLoops().Count;
+        var percent = 2.5f / GetActiveRopeLoops().Count;
+        
+        foreach (var r in GetActiveRopeLoops())
         {
             r.transform.DOScale(new Vector3(0, 1, 0), duration).SetEase(Ease.InSine);
             sewingClothes.transform.DOLocalMoveX(sewingClothes.transform.localPosition.x+percent, duration);
+            await AnimateNeedle();
             await Task.Delay((int)(duration * 1000));
         }
         
-        if (_needleAnimationCoroutine != null)
-        {
-            StopCoroutine(_needleAnimationCoroutine);
-        }
-
-        await PlayFinishParticle();
+        await PlayFinishParticles();
         _colorTransition.ChangeColor();
         InstantiateClothes();
     }
-    private async Task PlayFinishParticle()
+
+    #endregion
+    
+    #region Particle Play & Stop
+
+    private async Task PlayFinishParticles()
     {
-        finishSparkParticle.Play();
+        sparkParticleEffect.Play();
         await Task.Delay(400);
         finishCloudParticle.Play();
     }
-    private IEnumerator AnimateNeedle()
+    private void StopFinishParticles()
     {
-        while (true)
-        {
-            yield return needle.transform.DOLocalMoveY(0.09f, 0.2f).WaitForCompletion();
-            yield return needle.transform.DOLocalMoveY(0.14f, 0.2f).WaitForCompletion();
-        }
+        sparkParticleEffect.Stop();
+        finishCloudParticle.Stop();
     }
-    private void SetRopeSlot(bool isActive)
+
+    #endregion
+    
+    #region Machine Methods
+
+    private async Task AnimateNeedle()
+    {
+        needle.transform.DOLocalMoveY(0.09f, 0.1f).OnComplete(() =>
+        {
+            needle.transform.DOLocalMoveY(0.13f, 0.1f).WaitForCompletion();
+        });
+        
+        await Task.CompletedTask;
+    }
+    private void SetRopeSlotsVisibility()
     {
         foreach (Transform t in ropeObject.transform)
         {
-            t.gameObject.SetActive(isActive);
-            t.transform.localScale = isActive? Vector3.one : Vector3.zero;
+            t.gameObject.SetActive(true);
+            t.transform.localScale =  Vector3.one;
         }
     }
-    private List<GameObject> GetRopeChild()
+    private List<GameObject> GetActiveRopeLoops()
     {
         List<GameObject> ropeLoops = new List<GameObject>();
         foreach (Transform t in ropeObject.transform)
@@ -134,37 +135,22 @@ public class SewingMachine : MonoBehaviour
 
         return ropeLoops;
     }
+
+    #endregion
+
     private void InstantiateClothes()
     {
         var newClothes = Instantiate(clothingItemData.clothesModel,mainCanvas.transform);
-        newClothes.GetComponent<ClothingItem>().itemData.price = machineData.earnedMoney;
+        
+        var item = newClothes.GetComponent<ClothingItem>();
+        item.price = item.itemData.price + machineData.earnedMoney;
+        
         newClothes.gameObject.name = gameObject.name;
         sewingClothes.transform.localPosition=Vector3.zero;
         newClothes.transform.localScale=Vector3.zero;
         newClothes.transform.DOScale(Vector3.one * 0.03f, 1f);
         newClothes.transform.DORotate(Vector3.zero, 1f);
         newClothes.transform.DOLocalMove(new Vector3(0, 2f, -3f), 1f);
-    }
-
-    private void InitMachine()
-    {
-        var level =PlayerPrefs.GetInt("CurrentLevel");
-        
-        if (machineData.unlockedPrice==0)
-        {
-            _isMachineLocked = false;
-            lockedImage.gameObject.SetActive(false);
-            return;
-        }
-
-        if (level>= machineData.unlockedLevel)
-        {
-            lockedImage.GetComponentInChildren<TextMeshProUGUI>().text = machineData.unlockedPrice.ToString();
-        }
-        else
-        {
-            lockedImage.GetComponentInChildren<TextMeshProUGUI>().text = "LEVEL "+machineData.unlockedLevel.ToString();
-        }
     }
 
 

@@ -880,14 +880,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afd1150135214ca4cac754359edc5286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  finishSparkParticle: {fileID: 3703806972111281976}
-  finishCloudParticle: {fileID: 8017964042397282411}
   machineData: {fileID: 11400000, guid: f77e10966638a7d4ca7e36d7ee66e991, type: 2}
+  isLocked: 0
+  sparkParticleEffect: {fileID: 3703806972111281976}
+  finishCloudParticle: {fileID: 8017964042397282411}
   clothingItemData: {fileID: 11400000, guid: 06a9818d27bc974499f3f457049b8314, type: 2}
   needle: {fileID: 450259228796249438}
   ropeObject: {fileID: 2439051162782793234}
   sewingClothes: {fileID: 6375484003344698482}
-  lockedImage: {fileID: 6470466790896645843}
   mainCanvas: {fileID: 6375484004083845146}
 --- !u!65 &3657687113634730508
 BoxCollider:
@@ -1438,18 +1438,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f5c0883c46a06c04b8b84b06c88ba096, type: 3}
---- !u!114 &6470466790896645843 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4477517177045211785, guid: f5c0883c46a06c04b8b84b06c88ba096,
+--- !u!1 &7279048187265558244 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 210752908252957374, guid: f5c0883c46a06c04b8b84b06c88ba096,
     type: 3}
   m_PrefabInstance: {fileID: 7487482208289451098}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+--- !u!114 &1939496893725899084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7279048187265558244}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d8b9bf9df354190a93abc23627b5c5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _collider: {fileID: 0}
 --- !u!224 &7661744458596954759 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 989413783969160925, guid: f5c0883c46a06c04b8b84b06c88ba096,

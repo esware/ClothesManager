@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Numerics;
 using DG.Tweening;
+using EWGames.Dev.Scripts.ShopItem;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -13,9 +14,10 @@ namespace EWGames.Dev.Scripts
     {
         public static Action<ClothingItem, string> OnReadyForPaint;
         public static Action<PaintMachine,ClothingItem> OnClothesLocated;
-        public static Action<ClothingItemData> OnItemSold;
+        public static Action<int> OnItemSold;
 
         public ClothingItemData itemData;
+        public int price;
         public string targetTag;
 
         #region Private Variables
@@ -53,9 +55,6 @@ namespace EWGames.Dev.Scripts
                 transform.SetParent(_canvas);
                 transform.DOLocalMove(Vector3.zero, .1f);
 
-                _uiManager.UpdateMission();
-                
-                
                 transform.DOScale(Vector3.one * 3, 1f).OnComplete(() =>
                 {
                     var image = GetComponent<Image>();
@@ -68,7 +67,9 @@ namespace EWGames.Dev.Scripts
                         transform.DOScale(Vector3.one, 1f);
                     }).OnComplete(() =>
                     {
-                        OnItemSold?.Invoke(itemData);
+                        Shop.Instance.SellItem(itemData);
+                        _uiManager.UpdateMission();
+                        OnItemSold?.Invoke(price);
                         Destroy(gameObject);
                     });
                 });
@@ -99,7 +100,7 @@ namespace EWGames.Dev.Scripts
                 
                 if (button != null)
                 {
-                    button.GetComponent<PaintButtonController>().InteractButton();
+                    button.GetComponent<SectionSwitchController>().InteractButton();
                     transform.DOScale(Vector3.zero, 0.3f);
                     OnReadyForPaint?.Invoke(this, name);
                     

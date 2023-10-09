@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6101e96e6c2947d9be15d525d76788ef, type: 3}
   m_Name: Socks
   m_EditorClassIdentifier: 
-  price: 200
+  price: 50
   clothesModel: {fileID: 652070799777289025, guid: f124bf989d6b3b843b71bfb30598c163,
     type: 3}
   itemSprite: {fileID: 21300000, guid: 9d894e190daea4768aec27190ec8c10b, type: 3}
-  paintedColor: 0
-  clothesType: 0
+  color: 0

@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &5763598418708737463
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5763598418708737462}
+  - component: {fileID: 5763598418708737457}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5763598418708737462
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5763598418708737463}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.013866776, y: -0.18489462, z: -0.0011876822}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5763598418708737457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5763598418708737463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75c370906a0b439a9d99979bf2b7e468, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levels:
+  - levelNumber: 1
+    missions:
+    - itemData: {fileID: 11400000, guid: 42f0a9f883ccd924db31e86ca8baf9bb, type: 2}
+      targetAmount: 1
+      color: 0
+      isCompleted: 0
+      currentAmount: 0
+  - levelNumber: 2
+    missions:
+    - itemData: {fileID: 11400000, guid: 42f0a9f883ccd924db31e86ca8baf9bb, type: 2}
+      targetAmount: 1
+      color: 0
+      isCompleted: 0
+      currentAmount: 0
+    - itemData: {fileID: 11400000, guid: b2cc6ec6738a2d747b722feae5bc3bc8, type: 2}
+      targetAmount: 1
+      color: 0
+      isCompleted: 0
+      currentAmount: 0
+  - levelNumber: 3
+    missions:
+    - itemData: {fileID: 11400000, guid: b2cc6ec6738a2d747b722feae5bc3bc8, type: 2}
+      targetAmount: 3
+      color: 0
+      isCompleted: 0
+      currentAmount: 0
+    - itemData: {fileID: 11400000, guid: 42f0a9f883ccd924db31e86ca8baf9bb, type: 2}
+      targetAmount: 3
+      color: 1
+      isCompleted: 0
+      currentAmount: 0
+    - itemData: {fileID: 11400000, guid: bd913454db1999e4ba2abf94c0773e84, type: 2}
+      targetAmount: 2
+      color: 0
+      isCompleted: 0
+      currentAmount: 0

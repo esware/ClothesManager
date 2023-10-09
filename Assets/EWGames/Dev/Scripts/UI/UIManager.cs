@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
 using DG.Tweening;
 using EWGames.Dev.Scripts.Missions;
+using EWGames.Dev.Scripts.Serialization;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Vector3 = UnityEngine.Vector3;
@@ -32,35 +36,49 @@ namespace EWGames.Dev.Scripts
         private void SignUpEvents()
         {
             ClothingItem.OnItemSold += ItemSold;
+            GameEvents.OnMachineSold += ItemSold;
         }
 
         private void SetLevelText()
         {
-            var currentLevel = GameManager.Instance.currentLevel + 1;
-            levelText.text = "DAY " +  currentLevel+ "!";
+            var levelIndex = GameManager.Instance.currentLevel + 1;
+            levelText.text = "DAY " + levelIndex + "!";
         }
 
         void GetCurrentMoney()
         {
-            moneyText.text = GameManager.Instance.currentMoney.ToString(CultureInfo.CurrentCulture);
+            var money = GameManager.Instance.currentMoney;
+            moneyText.text = ChangeTextFormat(money);
         }
 
-        void ItemSold(ClothingItemData data)
+        void ItemSold(int price)
         {
-            moneyText.text = GameManager.Instance.currentMoney.ToString(CultureInfo.InvariantCulture);
+            var money = GameManager.Instance.currentMoney;
+            moneyText.text = ChangeTextFormat(money);
         }
 
-        private void LoadMissions()
+        #region Mission
+
+        private async Task LoadMissions()
         {
             missions.Clear();
+            var layoutGroup = missionsTransform.GetComponent<HorizontalLayoutGroup>();
             var gameManager = GameManager.Instance;
+            
             foreach (var mission in gameManager.levels[gameManager.currentLevel].missions)
             {
                 var m=Instantiate(missionPrefab, missionsTransform);
+                
                 m.transform.localScale = Vector3.zero;
+                m.transform.localPosition=Vector3.zero;
                 m.transform.DOScale(Vector3.one, 1f);
+                
                 m.Initialize(mission.itemData.itemSprite,ColorMapper.GetColorFromCode(mission.color),mission.targetAmount);
                 missions.Add(m);
+                
+                layoutGroup.enabled = false;
+                await Task.Delay(1000);
+                layoutGroup.enabled = true;
             }
         }
 
@@ -69,35 +87,44 @@ namespace EWGames.Dev.Scripts
             var gameManager = GameManager.Instance;
             var currentLevelMissions = gameManager.levels[gameManager.currentLevel].missions;
 
-            for (int i = 0; i < missions.Count; i++)
+            for (int i = 0; i < currentLevelMissions.Count; i++)
             {
                 var mission = missions[i];
-                var correspondingLevelMission = currentLevelMissions[i];
-                
-                if (correspondingLevelMission.isCompleted)
+                if (currentLevelMissions[i].isCompleted)
                 {
-                    mission.transform.DOScale(Vector3.zero, 1f).OnComplete(() =>
+                    mission.transform.DOScale(Vector3.one*1.5f, 0.5f).OnComplete(() =>
                     {
-                        Destroy(mission.gameObject);
-                        missions.Remove(mission);
+                        mission.transform.DOScale(Vector3.zero, 0.5f).OnComplete(() =>
+                        {
+                            mission.gameObject.SetActive(false);
+                            
+                        });
                     });
                 }
                 else
                 {
-                    var amount = correspondingLevelMission.targetAmount - correspondingLevelMission.currentAmount;
+                    var amount = currentLevelMissions[i].targetAmount - currentLevelMissions[i].currentAmount;
                     mission.UpdateCountText(amount);
                 }
-            }
+                
+                if (AreAllMissionsCompleted(gameManager.currentLevel))
+                {
+                    gameManager.levels[gameManager.currentLevel].missions.Clear();
+                    gameManager.IncreaseLevel();
+                    SetLevelText();
+                
+                    foreach (var m in missions)
+                    {
+                        Destroy(m.gameObject);
+                    }
 
-            if (AreAllMissionsCompleted(gameManager.currentLevel))
-            {
-                gameManager.IncreaseLevel();
-                SetLevelText();
-                LoadMissions();
+                    LoadMissions();
+                    return;
+                }
             }
         }
         
-        public bool AreAllMissionsCompleted(int levelIndex)
+        private bool AreAllMissionsCompleted(int levelIndex)
         {
             var gameManager = GameManager.Instance;
             var levelMissions = gameManager.levels[levelIndex].missions;
@@ -112,6 +139,19 @@ namespace EWGames.Dev.Scripts
 
             return true;
         }
+
+        #endregion
+
+        
+        private string ChangeTextFormat(int money)
+        {
+            if (money >= 1000)
+            {
+                return (money / 1000f).ToString("F1") + "k $";
+            }
+            return money.ToString();
+        }
+
 
     }
 }

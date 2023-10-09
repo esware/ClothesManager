@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections;
+﻿
 using DG.Tweening;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace EWGames.Dev.Scripts
 {
-    public class PaintButtonController : MonoBehaviour,IPointerClickHandler
+    public class SectionSwitchController : MonoBehaviour,IPointerClickHandler
     {
+        public Color[] sectionColors;
         private Camera _mainCam;
         private TextMeshProUGUI _buttonText;
         private Image _buttonImage;
@@ -19,6 +18,7 @@ namespace EWGames.Dev.Scripts
             _buttonText = GetComponentInChildren<TextMeshProUGUI>();
             _buttonImage = GetComponent<Image>();
             _mainCam=Camera.main;
+            _mainCam.backgroundColor = sectionColors[0];
         }
 
         public void InteractButton()
@@ -40,24 +40,26 @@ namespace EWGames.Dev.Scripts
         {
             if (_mainCam.transform.position.x >1)
             {
-                SewSection();
+                SwitchToSewSection();
             }
             else
             {
-                PaintSection();
+                SwitchToPaintSection();
             }
         }
 
-        void SewSection()
+        void SwitchToSewSection()
         {
             _mainCam.transform.localPosition = new Vector3(0f, 1.1f, -1.6f);
             _buttonText.text = "PAINT";
+            _mainCam.backgroundColor = sectionColors[0];
         }
 
-        void PaintSection()
+        void SwitchToPaintSection()
         {
             _mainCam.transform.localPosition = new Vector3(1.5f, 1.1f, -1.6f);
             _buttonText.text = "SEW";
+            _mainCam.backgroundColor = sectionColors[1];
         }
     }
 }

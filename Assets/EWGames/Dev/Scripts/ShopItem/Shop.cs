@@ -27,14 +27,11 @@ namespace EWGames.Dev.Scripts.ShopItem
         
         public void SellItem(ClothingItemData itemData)
         {
-            foreach (Level level in GameManager.Instance.levels)
+            foreach (Mission mission in GameManager.Instance.levels[GameManager.Instance.currentLevel].missions)
             {
-                foreach (Mission mission in level.missions)
+                if (mission.itemData.itemSprite == itemData.itemSprite  && mission.color==itemData.color && !mission.isCompleted)
                 {
-                    if (mission.itemData==itemData && mission.color==itemData.color && !mission.isCompleted)
-                    {
-                        mission.UpdateProgress(1);
-                    }
+                    mission.UpdateProgress(1);
                 }
             }
         }
