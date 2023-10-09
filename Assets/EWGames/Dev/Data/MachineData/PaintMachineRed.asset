@@ -15,7 +15,7 @@ MonoBehaviour:
   isLocked: 1
   machineType: 1
   color: 0
-  operationTime: 1
+  operationTime: 2
   earnedMoney: 100
   unlockedPrice: 0
   unlockedLevel: 0

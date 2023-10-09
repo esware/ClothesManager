@@ -180,6 +180,7 @@ namespace EWGames.Dev.Scripts
         {
             _parent.GetComponent<PaintingBench>().RemovePositionFromList(this);
             transform.SetParent(targetTransform);
+            transform.DOScale(Vector3.one*0.5f, 1f);
             transform.DOLocalMove(new Vector3(0.124715351f, 0.310062677f, -0.052471254f), 0.2f);
 
             var machine = targetTransform.GetComponent<PaintMachine>();
