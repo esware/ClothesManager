@@ -1,13 +1,5 @@
 # ClothesManager
 
-[GamePlay Videos](https://drive.google.com/file/d/1sLYhj3xmucmPY-ks-UG6HCRH-xYU3E3S/view?usp=sharing)
-[GamePlay Videos](https://drive.google.com/file/d/1Y27sbMJK-2kB76wLJ-iChWDTGvyaHwcu/view?usp=sharing)
-
-## Description
-
-
-## Features
-
 ## Screenshots
 
 <p align="center">
@@ -18,11 +10,9 @@
   <img src="https://github.com/esware/ClothesManager/assets/48649947/d9d1f802-86d4-41a1-acca-93b531f42cdb" width="200">
 </p>
 
+**Game Play Videos**
+https://drive.google.com/drive/folders/1rIedIQHLrq8Gd1stgoM6DGlpHF7jEKHf?usp=sharing
 
-## Installation
-
-
-## Usage
 
 ## License
 
